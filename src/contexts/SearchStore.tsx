@@ -16,33 +16,40 @@ interface animationObjects {
   exit: StyleObjects;
 }
 
+type searchFunction = (
+  q: string,
+  type: string,
+  state: React.Dispatch<React.SetStateAction<[]>>
+) => void;
+
 type fullProviders = {
   animateStateSearch: animationObjects;
   filteredAlbum: number;
   filteredTrack: number;
   topTracks: null | [];
   albums: null | [];
+  artist: null | {};
   focused: boolean;
   slicedElements: number[];
   page: number;
   typeString: string;
   term: null | string;
-  selectedItem: null;
-  submittedTerm;
-  items;
-  setAnimateStateList;
-  setAnimateStateSearch;
-  setFilteredAlbum;
-  setFilteredTrack;
-  setProfile;
-  deleteProfile;
-  setSlicedElements;
-  setPage;
-  setTypeString;
-  setTerm;
-  setSubmittedTerm;
-  setItems;
-  spotifyTokenAndSearch;
+  selectedItem: null | {};
+  submittedTerm: null | string;
+  items: [];
+  setAnimateStateList: React.Dispatch<React.SetStateAction<animationObjects>>;
+  setAnimateStateSearch: React.Dispatch<React.SetStateAction<animationObjects>>;
+  setFilteredAlbum: React.Dispatch<React.SetStateAction<number>>;
+  setFilteredTrack: React.Dispatch<React.SetStateAction<number>>;
+  setProfile: Function;
+  deleteProfile: () => void;
+  setSlicedElements: React.Dispatch<React.SetStateAction<number[]>>;
+  setPage: React.Dispatch<React.SetStateAction<number>>;
+  setTypeString: React.Dispatch<React.SetStateAction<null | string>>;
+  setTerm: React.Dispatch<React.SetStateAction<null | string>>;
+  setSubmittedTerm: React.Dispatch<React.SetStateAction<null | number>>;
+  setItems: React.Dispatch<React.SetStateAction<[]>>;
+  spotifyTokenAndSearch: searchFunction;
   spotifyArtistAndAlbum;
   setSelectedItem;
   navigate;
