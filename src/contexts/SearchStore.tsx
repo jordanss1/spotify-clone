@@ -1,5 +1,11 @@
-import React, { createContext, useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import React, {
+  createContext,
+  useState,
+  useRef,
+  MutableRefObject,
+  ProviderProps,
+} from "react";
+import { NavigateFunction, useNavigate } from "react-router-dom";
 import { spotifyTokenAndSearch, spotifyArtistAndAlbum } from "../api";
 import {
   useAnimateSearchManager,
@@ -22,21 +28,22 @@ type searchFunction = (
   state: React.Dispatch<React.SetStateAction<[]>>
 ) => void;
 
-type fullProviders = {
+type fullProviderTypes = {
   animateStateSearch: animationObjects;
+  animateStateList: animationObjects;
   filteredAlbum: number;
   filteredTrack: number;
   topTracks: null | [];
   albums: null | [];
   artist: null | {};
-  focused: boolean;
+  focused: MutableRefObject<boolean>;
   slicedElements: number[];
   page: number;
   typeString: string;
   term: null | string;
   selectedItem: null | {};
   submittedTerm: null | string;
-  items: [];
+  items: [] | never[];
   setAnimateStateList: React.Dispatch<React.SetStateAction<animationObjects>>;
   setAnimateStateSearch: React.Dispatch<React.SetStateAction<animationObjects>>;
   setFilteredAlbum: React.Dispatch<React.SetStateAction<number>>;
@@ -45,14 +52,14 @@ type fullProviders = {
   deleteProfile: () => void;
   setSlicedElements: React.Dispatch<React.SetStateAction<number[]>>;
   setPage: React.Dispatch<React.SetStateAction<number>>;
-  setTypeString: React.Dispatch<React.SetStateAction<null | string>>;
-  setTerm: React.Dispatch<React.SetStateAction<null | string>>;
-  setSubmittedTerm: React.Dispatch<React.SetStateAction<null | number>>;
-  setItems: React.Dispatch<React.SetStateAction<[]>>;
+  setTypeString: React.Dispatch<React.SetStateAction<string>>;
+  setTerm: React.Dispatch<React.SetStateAction<string>>;
+  setSubmittedTerm: React.Dispatch<React.SetStateAction<string>>;
+  setItems: React.Dispatch<React.SetStateAction<[] | never[]>>;
   spotifyTokenAndSearch: searchFunction;
-  spotifyArtistAndAlbum;
-  setSelectedItem;
-  navigate;
+  spotifyArtistAndAlbum: (id: string, state: Function) => void;
+  setSelectedItem: React.Dispatch<any>;
+  navigate: NavigateFunction;
 };
 
 type searchStoreResult = ReturnType<typeof SearchStore>;
@@ -93,7 +100,7 @@ export const SearchStore = ({ children }) => {
 
   const navigate = useNavigate();
 
-  const fullProviders = {
+  const fullProviders: fullProviderTypes = {
     animateStateSearch,
     animateStateList,
     filteredAlbum,
