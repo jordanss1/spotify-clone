@@ -7,7 +7,50 @@ import {
 } from "./AnimateStateHooks";
 import { useArtistResults } from "./SearchResultHooks";
 
-const SearchContext = createContext();
+type StyleObjects =
+  | { x: number; opacity: number }
+  | { y: number; opacity: number };
+
+interface animationObjects {
+  initial: StyleObjects;
+  exit: StyleObjects;
+}
+
+type fullProviders = {
+  animateStateSearch: animationObjects;
+  filteredAlbum: number;
+  filteredTrack: number;
+  topTracks: null | [];
+  albums: null | [];
+  focused: boolean;
+  slicedElements: number[];
+  page: number;
+  typeString: string;
+  term: null | string;
+  selectedItem: null;
+  submittedTerm;
+  items;
+  setAnimateStateList;
+  setAnimateStateSearch;
+  setFilteredAlbum;
+  setFilteredTrack;
+  setProfile;
+  deleteProfile;
+  setSlicedElements;
+  setPage;
+  setTypeString;
+  setTerm;
+  setSubmittedTerm;
+  setItems;
+  spotifyTokenAndSearch;
+  spotifyArtistAndAlbum;
+  setSelectedItem;
+  navigate;
+};
+
+type searchStoreResult = ReturnType<typeof SearchStore>;
+
+const SearchContext = createContext<searchStoreResult>();
 
 export const SearchStore = ({ children }) => {
   const [term, setTerm] = useState("");
@@ -22,8 +65,8 @@ export const SearchStore = ({ children }) => {
 
   const { animateStateSearch, setAnimateStateSearch } = useAnimateSearchManager(
     {
-      initial: { opacity: 0.5, y: 100 },
-      exit: { opacity: 0, y: 0 },
+      initial: { y: 100, opacity: 0.5 },
+      exit: { y: 0, opacity: 0 },
     }
   );
 
